@@ -8,7 +8,7 @@ const DESIGNS = [
   { category: "Business Cards", sub: "Corporate Business Cards", title: "Corporate Business Cards Design 1", image: "images/business-cards/corporate-1.webp" },
   { category: "Business Cards", sub: "Corporate Business Cards", title: "Corporate Business Cards Design 2", image: "images/business-cards/corporate-2.webp" },
   { category: "Business Cards", sub: "Corporate Business Cards", title: "Corporate Business Cards Design 3", image: "images/business-cards/corporate-3.webp" },
-  { category: "Business Cards", sub: "Freelancer Business Cards", title: "Freelancer Business Cards Design 1", image: "images/covers/sub/freelancer-business-cards.webp" },
+  { category: "Business Cards", sub: "Freelancer Business Cards", title: "Freelancer Business Cards Design 1", image: "images/business-cards/freelancer-business-cards-1.webp" },
   { category: "Business Cards", sub: "Real Estate Agent Cards", title: "Real Estate Agent Cards Design 1", image: "images/covers/sub/real-estate-agent-cards.webp" },
   { category: "Business Cards", sub: "Doctor/Medical Business Cards", title: "Doctor/Medical Business Cards Design 1", image: "images/covers/sub/doctor-medical-business-cards.webp" },
   { category: "Business Cards", sub: "Lawyer/Advocate Cards", title: "Lawyer/Advocate Cards Design 1", image: "images/covers/sub/lawyer-advocate-cards.webp" },
