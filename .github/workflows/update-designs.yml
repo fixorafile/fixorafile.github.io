@@ -1,1 +1,34 @@
+name: Update designs.js
 
+on:
+  push:
+    paths:
+      - "images/**"
+      - "categories.js"
+      - "scripts/generate-designs.js"
+  workflow_dispatch:
+
+permissions:
+  contents: write
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - uses: actions/setup-node@v4
+        with:
+          node-version: 20
+      - name: Generate designs.js
+        run: node scripts/generate-designs.js
+      - name: Commit if changed
+        run: |
+          if [ -n "$(git status --porcelain designs.js)" ]; then
+            git config user.name "github-actions"
+            git config user.email "github-actions@users.noreply.github.com"
+            git add designs.js
+            git commit -m "Auto-update designs.js"
+            git push
+          else
+            echo "No changes"
+          fi
