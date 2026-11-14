@@ -26,12 +26,12 @@ const unmatched = [];
 for (const cat of CATEGORIES) {
   const catSlug = slug(cat.name);
   const dir = path.join(ROOT, "images", catSlug);
-  if (!fs.existsSync(dir) || !fs.statSync(dir).isDirectory()) continue;
+  const dirOk = fs.existsSync(dir) && fs.statSync(dir).isDirectory();
 
   const subBySlug = new Map(cat.subs.map((s, i) => [slug(s), { name: s, order: i }]));
   const found = [];
 
-  for (const file of fs.readdirSync(dir)) {
+  for (const file of dirOk ? fs.readdirSync(dir) : []) {
     const ext = path.extname(file).toLowerCase();
     if (!EXTS.includes(ext)) continue;
     const base = slug(path.basename(file, path.extname(file)));
@@ -51,6 +51,21 @@ for (const cat of CATEGORIES) {
       title: `${f.sub.name} Design ${f.num}`,
       image: encodeURI(`images/${catSlug}/${f.file}`),
     });
+  }
+
+  // Sub-category with a cover image but no design yet: show it using the cover.
+  const covDir = path.join(ROOT, "images", "covers", "sub");
+  for (const [sSlug, sub] of subBySlug) {
+    if (found.some((f) => f.sub.name === sub.name)) continue;
+    const cov = EXTS.map((e) => sSlug + e).find((n) => fs.existsSync(path.join(covDir, n)));
+    if (cov) {
+      designs.push({
+        category: cat.name,
+        sub: sub.name,
+        title: `${sub.name} Design 1`,
+        image: encodeURI(`images/covers/sub/${cov}`),
+      });
+    }
   }
 }
 
