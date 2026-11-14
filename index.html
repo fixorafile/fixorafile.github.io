@@ -1,0 +1,269 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Fixora File – Design Portfolio</title>
+<meta name="description" content="Graphic design portfolio: business cards, menu cards, posters, packaging, wedding cards and more.">
+<script>
+/* Tailwind CDN wali production warning chhupane ke liye */
+(function(){var w=console.warn;console.warn=function(){var m=arguments[0];if(typeof m==="string"&&m.indexOf("cdn.tailwindcss.com should not be used in production")>-1)return;return w.apply(console,arguments);};})();
+</script>
+<script src="https://cdn.tailwindcss.com/3.4.17"></script>
+<style>
+  html,body{margin:0}
+  body{overflow-x:hidden;background:#f9fafb}
+  .pill-row{scrollbar-width:thin}
+  [hidden]{display:none!important}
+  .card{transition:transform .25s,box-shadow .25s}
+  .card:hover{transform:translateY(-6px);box-shadow:0 20px 40px rgba(0,0,0,.15)}
+</style>
+</head>
+<body class="text-gray-800">
+
+<header class="bg-gradient-to-r from-purple-600 to-indigo-600 text-white shadow-lg sticky top-0 z-40">
+  <div class="max-w-7xl mx-auto px-3 md:px-4 py-3 flex flex-wrap items-center justify-between gap-y-3">
+    <a href="#" data-go="{}" class="flex items-center gap-2 md:gap-3">
+      <div class="w-10 h-10 md:w-12 md:h-12 bg-white rounded-lg shadow flex items-center justify-center">
+        <svg class="w-7 h-7 text-purple-600" fill="currentColor" viewBox="0 0 24 24"><path d="M20 6h-8l-2-2H4c-1.1 0-1.99.9-1.99 2L2 18c0 1.1.9 2 2 2h16c1.1 0 2-.9 2-2V8c0-1.1-.9-2-2-2zm-1 12H5V8h14v10z"/><path d="M7 10h10v2H7zm0 3h10v2H7zm0 3h7v2H7z" opacity=".7"/></svg>
+      </div>
+      <span class="text-xl md:text-2xl font-bold whitespace-nowrap">Fixora File</span>
+    </a>
+    <div id="searchForm" class="order-last md:order-none basis-full md:basis-0 md:flex-1 max-w-xl md:mx-8 relative">
+      <input id="searchInput" type="text" placeholder="Search designs..." class="w-full px-4 py-2 pr-24 rounded-full text-gray-800 focus:outline-none focus:ring-2 focus:ring-white">
+      <button id="searchBtn" type="button" class="absolute right-1.5 top-1 bg-purple-600 text-white px-4 py-1 rounded-full hover:bg-purple-700 font-medium text-sm">Search</button>
+    </div>
+    <div class="flex items-center gap-2 md:gap-3">
+      <a href="#random=1" data-go='{"random":"1"}' class="bg-gradient-to-r from-orange-500 to-pink-500 px-3 md:px-4 py-2 rounded-full font-semibold hover:scale-105 transition">🔀 <span class="hidden md:inline">Random</span></a>
+      <a id="waTop" target="_blank" rel="noopener" class="bg-green-500 px-3 md:px-4 py-2 rounded-full font-semibold hover:bg-green-600 hover:scale-105 transition">WhatsApp</a>
+    </div>
+  </div>
+  <nav class="bg-white text-gray-800 shadow-sm">
+    <div id="nav" class="pill-row flex gap-2 overflow-x-auto px-4 py-2"></div>
+  </nav>
+  <div id="subnavWrap" class="bg-gray-100" hidden>
+    <div id="subnav" class="pill-row flex gap-2 overflow-x-auto px-4 py-3"></div>
+  </div>
+</header>
+
+<main id="app" class="w-full max-w-7xl mx-auto px-4 py-8"></main>
+
+<!-- Image zoom + Download -->
+<div id="lightbox" class="fixed inset-0 z-50 bg-black/80 flex items-center justify-center p-3" hidden>
+  <div class="bg-white rounded-2xl shadow-2xl w-full max-w-3xl max-h-[95vh] overflow-y-auto relative">
+    <button id="lbClose" class="absolute top-3 right-3 w-9 h-9 rounded-full bg-black/60 text-white text-xl leading-none z-10" aria-label="Close">✕</button>
+    <button id="lbPrev" class="absolute left-3 top-1/3 w-10 h-10 rounded-full bg-black/50 text-white text-2xl leading-none z-10" aria-label="Previous">‹</button>
+    <button id="lbNext" class="absolute right-3 top-1/3 w-10 h-10 rounded-full bg-black/50 text-white text-2xl leading-none z-10" aria-label="Next">›</button>
+    <img id="lbImg" alt="" class="w-full max-h-[65vh] object-contain bg-gray-100 rounded-t-2xl">
+    <div class="p-4 md:p-6">
+      <h3 id="lbTitle" class="text-xl md:text-2xl font-bold"></h3>
+      <p id="lbMeta" class="text-gray-500 text-sm mb-4"></p>
+      <div class="flex flex-col sm:flex-row gap-3">
+        <a id="lbDownload" class="flex-1 text-center bg-blue-600 text-white py-3 rounded-xl font-bold hover:bg-blue-700 transition">⬇ Download</a>
+        <a id="lbWa" target="_blank" rel="noopener" class="flex-1 text-center bg-green-500 text-white py-3 rounded-xl font-bold hover:bg-green-600 transition">WhatsApp for Customization</a>
+      </div>
+    </div>
+  </div>
+</div>
+
+<footer class="bg-gray-900 text-white mt-16">
+  <div class="max-w-7xl mx-auto px-4 py-10">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-8">
+      <div>
+        <h3 class="text-xl font-bold mb-2">Fixora File</h3>
+        <p class="text-gray-400">Graphic design portfolio – cards, menus, posters, packaging and more.</p>
+      </div>
+      <div class="space-y-2 text-gray-400">
+        <h4 class="font-bold text-white text-lg mb-2">Contact</h4>
+        <p>📞 +91 7091328594</p>
+        <p>✉️ fixorafile@gmail.com</p>
+        <p>📍 Patna, Bihar, India</p>
+      </div>
+      <div class="space-y-2">
+        <h4 class="font-bold text-white text-lg mb-2">Follow</h4>
+        <div class="flex flex-wrap gap-3 text-gray-300">
+          <a class="hover:text-white underline" href="https://wa.me/917091328594" target="_blank" rel="noopener">WhatsApp</a>
+          <a class="hover:text-white underline" href="https://www.instagram.com/fixorafile/" target="_blank" rel="noopener">Instagram</a>
+          <a class="hover:text-white underline" href="https://www.facebook.com/altafallrounder" target="_blank" rel="noopener">Facebook</a>
+          <a class="hover:text-white underline" href="https://in.pinterest.com/Altafallrounder/" target="_blank" rel="noopener">Pinterest</a>
+        </div>
+      </div>
+    </div>
+    <div class="border-t border-gray-800 mt-8 pt-6 text-center text-gray-400">© 2026 Fixora File. All rights reserved.</div>
+  </div>
+</footer>
+
+<script src="categories.js"></script>
+<script src="designs.js"></script>
+<script>
+const WA = "917091328594";
+const $ = s => document.querySelector(s);
+const esc = s => String(s).replace(/[&<>"']/g, c => ({"&":"&amp;","<":"&lt;",">":"&gt;",'"':"&quot;","'":"&#39;"}[c]));
+const hashOf = o => { const s = new URLSearchParams(o).toString(); return s ? "#" + s : "#"; };
+const link = o => `href="${hashOf(o)}" data-go="${esc(JSON.stringify(o))}"`;
+let params = {};
+function go(o, push = true) {
+  params = o || {};
+  if (push) {
+    try { history.pushState(params, "", hashOf(params)); }
+    catch (e) { try { history.pushState(params, ""); } catch (e2) {} }
+  }
+  render();
+}
+const wa = t => "https://wa.me/" + WA + "?text=" + encodeURIComponent(t);
+
+const catByName = Object.fromEntries(CATEGORIES.map(c => [c.name, c]));
+const byCat = c => DESIGNS.filter(d => d.category === c);
+const bySub = (c, s) => DESIGNS.filter(d => d.category === c && d.sub === s);
+function subsWith(c) {
+  const order = (catByName[c] || {subs: []}).subs;
+  const uniq = [...new Set(byCat(c).map(d => d.sub))];
+  return uniq.sort((a, b) => {
+    const ia = order.indexOf(a), ib = order.indexOf(b);
+    return (ia < 0 ? 999 : ia) - (ib < 0 ? 999 : ib);
+  });
+}
+
+let currentList = [];
+let lbIndex = 0;
+
+$("#waTop").href = wa("Hi, I saw your portfolio and want a design.");
+
+function pill(label, href, active) {
+  return `<a ${href} class="px-4 py-2 rounded-full whitespace-nowrap font-semibold text-sm md:text-base border-2 transition hover:scale-105 ${active ? "bg-purple-600 text-white border-purple-600 shadow" : "bg-purple-100 text-purple-700 border-transparent hover:bg-purple-200"}">${esc(label)}</a>`;
+}
+
+function emptyBox(msg) {
+  return `<div class="text-center py-20"><div class="text-6xl mb-4">🎨</div><h3 class="text-2xl font-bold text-gray-600 mb-2">${msg}</h3><a ${link({})} class="inline-block mt-4 bg-purple-600 text-white px-8 py-3 rounded-full font-semibold hover:bg-purple-700">Back to Home</a></div>`;
+}
+
+function heading(text, crumbs) {
+  return `<div class="mb-6">
+    <div class="text-sm mb-3 flex flex-wrap gap-2 items-center">${crumbs}</div>
+    <div class="border-4 border-purple-600 bg-white px-4 md:px-8 py-3 md:py-4 rounded-2xl shadow-lg max-w-4xl mx-auto">
+      <h2 class="text-xl md:text-3xl font-bold text-center">${esc(text)}</h2>
+    </div></div>`;
+}
+const crumb = (label, href) => `<a class="text-purple-600 font-medium hover:underline" ${href}>${esc(label)}</a>`;
+const sep = `<span class="text-gray-400">/</span>`;
+
+function designGrid(list) {
+  currentList = list;
+  return `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">` +
+    list.map((d, i) => `
+      <button data-open="${i}" class="card text-left rounded-xl shadow-lg overflow-hidden bg-white">
+        <div class="aspect-square bg-gray-100"><img src="${esc(d.image)}" alt="${esc(d.title)}" loading="lazy" class="w-full h-full object-cover"></div>
+        <div class="p-3"><h3 class="font-bold text-sm md:text-base truncate">${esc(d.title)}</h3>
+        <p class="text-xs text-gray-500 truncate">${esc(d.sub || d.category)}</p></div>
+      </button>`).join("") + `</div>`;
+}
+
+function coverCard(label, href, list, cat) {
+  const cover = list[0];
+  const c = catByName[cat] || {color: "from-purple-400 to-purple-600", icon: "🎨"};
+  const media = cover
+    ? `<img src="${esc(cover.image)}" alt="${esc(label)}" loading="lazy" class="w-full h-full object-cover">`
+    : `<span class="text-6xl">${c.icon}</span>`;
+  const count = list.length ? `<p class="text-xs text-gray-500 mt-1">${list.length} design${list.length > 1 ? "s" : ""}</p>` : `<p class="text-xs text-gray-400 mt-1">Coming soon</p>`;
+  return `<a ${href} class="card block rounded-xl shadow-lg overflow-hidden bg-white">
+    <div class="aspect-square bg-gradient-to-br ${c.color} flex items-center justify-center">${media}</div>
+    <div class="p-3 md:p-4 text-center"><h3 class="font-bold">${esc(label)}</h3>${count}</div></a>`;
+}
+
+function renderNav(cat) {
+  $("#nav").innerHTML = pill("Home", link({}), !cat) + CATEGORIES.map(c => pill(c.name, link({cat: c.name}), c.name === cat)).join("");
+  const wrap = $("#subnavWrap");
+  if (cat && catByName[cat]) {
+    const subs = subsWith(cat);
+    wrap.hidden = !subs.length;
+    const sub = params.sub;
+    $("#subnav").innerHTML = subs.map(s => `<a ${link({cat, sub: s})} class="px-4 py-1.5 rounded-full whitespace-nowrap text-sm border-2 border-purple-600 transition ${s === sub ? "bg-purple-600 text-white" : "bg-white text-purple-600 hover:bg-purple-600 hover:text-white"}">${esc(s)}</a>`).join("");
+  } else wrap.hidden = true;
+}
+
+function render() {
+  const p = new URLSearchParams(params);
+  const cat = p.get("cat"), sub = p.get("sub"), q = p.get("q"), rnd = p.get("random");
+  const app = $("#app");
+  renderNav(cat);
+  window.scrollTo({top: 0});
+
+  if (rnd) {
+    const list = [...DESIGNS].sort(() => Math.random() - .5).slice(0, 20);
+    app.innerHTML = heading("Random Designs", crumb("Home", link({}))) + (list.length ? designGrid(list) : emptyBox("Abhi koi design nahi hai"));
+  } else if (q) {
+    const t = q.toLowerCase();
+    const list = DESIGNS.filter(d => (d.title + " " + d.category + " " + (d.sub || "")).toLowerCase().includes(t));
+    app.innerHTML = heading(`Search Results for "${q}"`, crumb("Home", link({}))) + (list.length ? designGrid(list) : emptyBox("No Results Found"));
+  } else if (cat && catByName[cat] && sub) {
+    const list = bySub(cat, sub);
+    app.innerHTML = heading(sub, crumb("Home", link({})) + sep + crumb(cat, link({cat}))) + (list.length ? designGrid(list) : emptyBox("Is sub-category me abhi design nahi hai"));
+  } else if (cat && catByName[cat]) {
+    const subs = subsWith(cat);
+    app.innerHTML = heading(cat, crumb("Home", link({}))) + (subs.length
+      ? `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">` + subs.map(s => coverCard(s, link({cat, sub: s}), bySub(cat, s), cat)).join("") + `</div>`
+      : emptyBox("Is category me designs jaldi aa rahe hain"));
+  } else {
+    app.innerHTML = `
+      <div class="text-center mb-8 max-w-3xl mx-auto">
+        <h2 class="text-2xl md:text-4xl font-bold mb-3">Graphic Design Portfolio</h2>
+        <p class="text-gray-600 text-base md:text-lg">Business cards, menus, posters, packaging, wedding cards aur bahut kuch.</p>
+      </div>
+      <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">` +
+      CATEGORIES.map(c => coverCard(c.name, link({cat: c.name}), byCat(c.name), c.name)).join("") + `</div>`;
+  }
+}
+
+/* ---------- Lightbox ---------- */
+function openLb(i) {
+  const d = currentList[i]; if (!d) return;
+  lbIndex = i;
+  $("#lbImg").src = d.image; $("#lbImg").alt = d.title;
+  $("#lbTitle").textContent = d.title;
+  $("#lbMeta").textContent = [d.category, d.sub].filter(Boolean).join(" › ");
+  const ext = (d.image.split("?")[0].match(/\.(\w+)$/) || [, "jpg"])[1];
+  const dl = $("#lbDownload");
+  dl.href = d.image; dl.setAttribute("download", d.title.replace(/[^\w\-]+/g, "_") + "." + ext);
+  $("#lbWa").href = wa("Hi, I want to customize this design: " + d.title);
+  const multi = currentList.length > 1;
+  $("#lbPrev").hidden = $("#lbNext").hidden = !multi;
+  $("#lightbox").hidden = false;
+  document.body.style.overflow = "hidden";
+}
+function closeLb() { $("#lightbox").hidden = true; document.body.style.overflow = ""; }
+function stepLb(n) { openLb((lbIndex + n + currentList.length) % currentList.length); }
+
+document.addEventListener("click", e => {
+  const a = e.target.closest("[data-go]");
+  if (a) { e.preventDefault(); go(JSON.parse(a.dataset.go)); return; }
+  const b = e.target.closest("[data-open]");
+  if (b) openLb(+b.dataset.open);
+  if (e.target === $("#lightbox")) closeLb();
+});
+$("#lbClose").onclick = closeLb;
+$("#lbPrev").onclick = () => stepLb(-1);
+$("#lbNext").onclick = () => stepLb(1);
+document.addEventListener("keydown", e => {
+  if ($("#lightbox").hidden) return;
+  if (e.key === "Escape") closeLb();
+  if (e.key === "ArrowLeft") stepLb(-1);
+  if (e.key === "ArrowRight") stepLb(1);
+});
+
+function doSearch() {
+  const v = $("#searchInput").value.trim();
+  if (v) go({q: v});
+}
+$("#searchBtn").addEventListener("click", doSearch);
+$("#searchInput").addEventListener("keydown", e => { if (e.key === "Enter") { e.preventDefault(); doSearch(); } });
+
+window.addEventListener("popstate", e => { params = e.state || {}; render(); });
+window.addEventListener("hashchange", () => {
+  try { params = Object.fromEntries(new URLSearchParams(location.hash.slice(1))); } catch (e) {}
+  render();
+});
+try { params = Object.fromEntries(new URLSearchParams(location.hash.slice(1))); } catch (e) {}
+render();
+</script>
+</body>
+</html>
