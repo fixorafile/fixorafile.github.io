@@ -158,15 +158,22 @@ function designGrid(list) {
       </button>`).join("") + `</div>`;
 }
 
-function coverCard(label, href, list, cat) {
-  const cover = list[0];
+const slug = s => s.toLowerCase().replace(/&/g, " ").replace(/[^a-z0-9]+/g, "-").replace(/^-+|-+$/g, "");
+const EXTS = ["webp", "jpg", "png", "jpeg"];
+function imgFail(el) {
+  const rest = (el.dataset.alts || "").split("|").filter(Boolean);
+  if (rest.length) { el.dataset.alts = rest.slice(1).join("|"); el.src = rest[0]; }
+  else el.remove();
+}
+/* kind = "category" ya "sub": cover image images/covers/<kind>/<slug>.<ext> se aati hai */
+function coverCard(label, href, list, cat, kind) {
   const c = catByName[cat] || {color: "from-purple-400 to-purple-600", icon: "🎨"};
-  const media = cover
-    ? `<img src="${esc(cover.image)}" alt="${esc(label)}" loading="lazy" class="w-full h-full object-cover">`
-    : `<span class="text-6xl">${c.icon}</span>`;
+  const srcs = EXTS.map(e => `images/covers/${kind}/${slug(label)}.${e}`);
+  if (list[0]) srcs.push(list[0].image);
+  const media = `<span class="text-6xl">${c.icon}</span><img src="${esc(srcs[0])}" data-alts="${esc(srcs.slice(1).join("|"))}" onerror="imgFail(this)" alt="${esc(label)}" loading="lazy" class="absolute inset-0 w-full h-full object-cover">`;
   const count = list.length ? `<p class="text-xs text-gray-500 mt-1">${list.length} design${list.length > 1 ? "s" : ""}</p>` : `<p class="text-xs text-gray-400 mt-1">Coming soon</p>`;
   return `<a ${href} class="card block rounded-xl shadow-lg overflow-hidden bg-white">
-    <div class="aspect-square bg-gradient-to-br ${c.color} flex items-center justify-center">${media}</div>
+    <div class="relative overflow-hidden aspect-square bg-gradient-to-br ${c.color} flex items-center justify-center">${media}</div>
     <div class="p-3 md:p-4 text-center"><h3 class="font-bold">${esc(label)}</h3>${count}</div></a>`;
 }
 
@@ -201,7 +208,7 @@ function render() {
   } else if (cat && catByName[cat]) {
     const subs = subsWith(cat);
     app.innerHTML = heading(cat, crumb("Home", link({}))) + (subs.length
-      ? `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">` + subs.map(s => coverCard(s, link({cat, sub: s}), bySub(cat, s), cat)).join("") + `</div>`
+      ? `<div class="grid grid-cols-2 sm:grid-cols-3 md:grid-cols-4 lg:grid-cols-5 gap-3 md:gap-6">` + subs.map(s => coverCard(s, link({cat, sub: s}), bySub(cat, s), cat, "sub")).join("") + `</div>`
       : emptyBox("Is category me designs jaldi aa rahe hain"));
   } else {
     app.innerHTML = `
@@ -210,7 +217,7 @@ function render() {
         <p class="text-gray-600 text-base md:text-lg">Business cards, menus, posters, packaging, wedding cards aur bahut kuch.</p>
       </div>
       <div class="grid grid-cols-2 md:grid-cols-4 gap-3 md:gap-6">` +
-      CATEGORIES.map(c => coverCard(c.name, link({cat: c.name}), byCat(c.name), c.name)).join("") + `</div>`;
+      CATEGORIES.map(c => coverCard(c.name, link({cat: c.name}), byCat(c.name), c.name, "category")).join("") + `</div>`;
   }
 }
 
